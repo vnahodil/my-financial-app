@@ -1,0 +1,39 @@
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE config files (VS Code example)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Python / Backend specific
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/*.sqlite3 # If using SQLite for dev fallback
+backend/.env # IMPORTANT: Never commit secrets!
+backend/instance/ # Often used by Flask for instance-specific config/DB
+
+# Node / Frontend specific
+frontend/node_modules/
+frontend/dist/ # Vite build output
+frontend/build/ # Create React App build output
+frontend/.env # Frontend secrets/config (if any)
+frontend/.env.*
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Other
+.env # A global .env if you ever use one
+*.log
