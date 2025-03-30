@@ -17,7 +17,7 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`${VITE_API_URL}/items`);
+      const response = await axios.get(`${VITE_API_URL}/api/items`);
       setItems(response.data);
     } catch (err) {
       console.error("Error fetching items:", err);
@@ -39,7 +39,7 @@ function App() {
 
     setError(null);
     try {
-      const response = await axios.post(`${VITE_API_URL}/items`, {
+      const response = await axios.post(`${VITE_API_URL}/api/items`, {
         name: newItemName,
         // description: 'Optional description' // Add if needed
       });
