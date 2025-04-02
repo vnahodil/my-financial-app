@@ -1,6 +1,7 @@
 # app.py
-from flask import Flask, jsonify, request # Added request
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import OperationalError # Import specific exception
 from flask_migrate import Migrate
 from flask_cors import CORS
 from config import Config
@@ -59,6 +60,24 @@ def add_item():
     except Exception as e:
         db.session.rollback() # Rollback in case of error
         return jsonify({"error": str(e)}), 500
+
+# Route to check database connection status
+@app.route('/api/db-status', methods=['GET'])
+def db_status():
+    try:
+        # Try getting a connection from the engine pool
+        connection = db.engine.connect()
+        connection.close() # Close the connection immediately after successful check
+        return jsonify({"connected": True, "message": "Database connection successful."})
+    except OperationalError as e:
+        # Handle specific connection errors (e.g., bad host, credentials)
+        app.logger.error(f"Database connection failed: {e}") # Log the error
+        return jsonify({"connected": False, "message": f"Database connection failed."}), 500
+    except Exception as e:
+        # Handle other potential errors during the check
+        app.logger.error(f"Error checking DB status: {e}")
+        return jsonify({"connected": False, "message": f"An error occurred while checking database status."}), 500
+
 
 # You don't need the __main__ block if using `flask run`
 # if __name__ == '__main__':

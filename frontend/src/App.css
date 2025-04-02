@@ -1,42 +1,73 @@
+/* Reset default browser styles that might interfere */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; /* Consistent font */
+  background-color: #f8f9fa; /* Light background for the whole page */
+  color: #343a40; /* Default text color */
+}
+
+/* Ensure the root element takes full height */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  display: flex;
+  min-height: 100vh;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Sidebar specific styles */
+.sidebar-nav .nav-link {
+  color: #495057; /* Slightly muted link color */
+  padding: 0.75rem 1rem;
+  border-radius: 0.3rem;
+  margin-bottom: 0.25rem;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sidebar-nav .nav-link:hover {
+  background-color: #e9ecef; /* Subtle hover background */
+  color: #0d6efd; /* Bootstrap primary blue on hover */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.sidebar-nav .nav-link.active {
+  background-color: #0d6efd; /* Active link background */
+  color: white; /* Active link text color */
+  font-weight: 500;
 }
 
+/* Main content area styling */
+.content-area {
+  flex-grow: 1; /* Allow content area to take remaining space */
+  padding: 2rem; /* Add padding around the content */
+  background-color: #ffffff; /* White background for content */
+  /* Optional: Add a subtle shadow or border if desired */
+  /* box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05); */
+}
+
+/* General heading styles */
+h2, h3, h4, h5, h6 {
+  color: #212529; /* Darker headings */
+  margin-bottom: 1rem;
+}
+
+/* Card styling adjustments for consistency */
 .card {
-  padding: 2em;
+  border: 1px solid #dee2e6; /* Standard border */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Subtle shadow */
 }
 
-.read-the-docs {
-  color: #888;
+.card-header {
+  background-color: #f8f9fa; /* Light header background */
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Alert styling adjustments */
+.alert {
+  border-radius: 0.3rem;
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 768px) {
+  /* Example: Stack sidebar and content on smaller screens */
+  /* #root { flex-direction: column; } */
+  /* .sidebar-nav { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #dee2e6; } */
 }

@@ -8,8 +8,8 @@ import Col from 'react-bootstrap/Col';
 
 // Import your custom components
 import Sidebar, { VIEWS } from './Sidebar'; // Import VIEWS constant
-import ItemsView from './ItemsView';
-// Import other view components here later (e.g., DashboardHome, SettingsView)
+import ItemsView from './ItemsView'; // Changed import
+import ProfileView from './ProfileView';
 
 function App() {
   // State to track the currently active view
@@ -18,12 +18,10 @@ function App() {
   // Function to render the correct component based on the active view
   const renderActiveView = () => {
     switch (activeView) {
-      case VIEWS.ITEMS:
-        return <ItemsView />;
-      case VIEWS.DASHBOARD:
-        return <h2>Dashboard Home (Content Area)</h2>; // Placeholder
-      case VIEWS.SETTINGS:
-        return <h2>Settings (Content Area)</h2>; // Placeholder
+      case VIEWS.ITEMS: // Changed case
+        return <ItemsView />; // Changed component
+      case VIEWS.PROFILE:
+        return <ProfileView />;
       default:
         return <ItemsView />; // Fallback to items view
     }
@@ -39,8 +37,8 @@ function App() {
           <Sidebar activeView={activeView} setActiveView={setActiveView} />
         </Col>
 
-        {/* Content Area Column */}
-        <Col sm={9} md={10} className="py-4 px-4"> {/* Add padding */}
+        {/* Content Area Column - Apply custom class and remove default padding */}
+        <Col sm={9} md={10} className="content-area"> {/* Use content-area class */}
           {/* Render the component returned by renderActiveView */}
           {renderActiveView()}
         </Col>
