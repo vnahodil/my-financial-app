@@ -10,6 +10,7 @@ import Col from 'react-bootstrap/Col';
 import Sidebar, { VIEWS } from './Sidebar'; // Import VIEWS constant
 import ItemsView from './ItemsView'; // Changed import
 import ProfileView from './ProfileView';
+import CookbookView from './CookbookView'; // Import the new CookbookView
 
 function App() {
   // State to track the currently active view
@@ -22,6 +23,8 @@ function App() {
         return <ItemsView />; // Changed component
       case VIEWS.PROFILE:
         return <ProfileView />;
+      case VIEWS.COOKBOOK: // Add case for CookbookView
+        return <CookbookView />;
       default:
         return <ItemsView />; // Fallback to items view
     }

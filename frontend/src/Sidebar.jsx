@@ -6,6 +6,7 @@ import Nav from 'react-bootstrap/Nav';
 const VIEWS = {
   ITEMS: 'items', // Changed from DB_STATUS
   PROFILE: 'profile',
+  COOKBOOK: 'cookbook', // Added Cookbook view
 };
 
 // Pass activeView and setActiveView down as props
@@ -22,6 +23,9 @@ function Sidebar({ activeView, setActiveView }) {
       </Nav.Link>
       <Nav.Link eventKey={VIEWS.PROFILE}>
         Profile
+      </Nav.Link>
+      <Nav.Link eventKey={VIEWS.COOKBOOK}> {/* Added Cookbook link */}
+        Cookbook
       </Nav.Link>
     </Nav>
   );

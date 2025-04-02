@@ -4,7 +4,7 @@ import { Briefcase, Mortarboard, CodeSlash, PersonCircle, Linkedin, Github, Enve
 
 // Placeholder data - replace with actual data later
 const profileData = {
-  name: "Alex Chen",
+  name: "Stanislav Zmuda",
   title: "Senior Software Engineer",
   tagline: "Building scalable web applications and driving innovation.",
   avatarUrl: "https://placehold.co/150x150/EFEFEF/AAAAAA&text=AC", // Simple placeholder image
@@ -28,9 +28,9 @@ const profileData = {
     { id: 8, name: "Problem Solving", level: 95 },
   ],
   contact: {
-    linkedin: "https://linkedin.com/in/alexchen",
-    github: "https://github.com/alexchen",
-    email: "alex.chen@email.com",
+    linkedin: "https://linkedin.com/in/zmuda",
+    github: "https://github.com/zmuda",
+    email: "stanislav.zmuda@protonmail.com",
   }
 };
 
