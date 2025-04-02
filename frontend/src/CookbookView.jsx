@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
+import Table from 'react-bootstrap/Table'; // Import Table component
 
 // Import the raw markdown content
 // Vite handles importing .md files as raw strings by default
@@ -46,7 +47,13 @@ function CookbookView() {
           )}
           {error && <Alert variant="danger">{error}</Alert>}
           {!loading && !error && (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                // Map the 'table' markdown element to a React Bootstrap Table
+                table: ({ node, ...props }) => <Table striped bordered hover responsive size="sm" {...props} />
+              }}
+            >
               {markdown}
             </ReactMarkdown>
           )}
