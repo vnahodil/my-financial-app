@@ -11,29 +11,33 @@ import Nav from 'react-bootstrap/Nav';
 import ItemsView from './ItemsView';
 import ProfileView from './ProfileView';
 import CookbookView from './CookbookView';
+import LandingPageView from './LandingPageView';
 
 // Define VIEWS constant locally since Sidebar is removed
 const VIEWS = {
   ITEMS: 'items',
   PROFILE: 'profile',
   COOKBOOK: 'cookbook',
+  LANDING: 'landing',
 };
 
 function App() {
   // State to track the currently active view
-  const [activeView, setActiveView] = useState(VIEWS.ITEMS); // Default to Items view
+  const [activeView, setActiveView] = useState(VIEWS.LANDING); // Default to Items view
 
   // Function to render the correct component based on the active view
   const renderActiveView = () => {
     switch (activeView) {
       case VIEWS.ITEMS: // Changed case
         return <ItemsView />; // Changed component
+        case VIEWS.LANDING: // Changed case
+        return <LandingPageView />; // Changed component
       case VIEWS.PROFILE:
         return <ProfileView />;
       case VIEWS.COOKBOOK: // Add case for CookbookView
         return <CookbookView />;
       default:
-        return <ItemsView />; // Fallback to items view
+        return <LandingPageView />; // Fallback to landing page view
     }
   };
 
@@ -54,12 +58,19 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto"> {/* Align links to the right */}
-              <Nav.Link
+            <Nav.Link
+                href="#landing"
+                active={activeView === VIEWS.LANDING}
+                onClick={() => setActiveView(VIEWS.LANDING)}
+              >
+                Home
+              </Nav.Link>
+            <Nav.Link
                 href="#items"
                 active={activeView === VIEWS.ITEMS}
                 onClick={() => setActiveView(VIEWS.ITEMS)}
               >
-                Items
+                DB Test
               </Nav.Link>
               <Nav.Link
                 href="#profile"
