@@ -38,18 +38,21 @@ function ProfileView() {
   return (
     <Container fluid className="py-4 px-md-5">
       {/* --- Hero Section --- */}
-      <Row className="align-items-center mb-5 bg-light p-4 rounded shadow-sm">
+      {/* Removed bg-light from the Row below */}
+      <Row className="align-items-center mb-5 p-4 rounded shadow-sm">
         <Col md={3} className="text-center mb-3 mb-md-0">
-          <Image src={profileData.avatarUrl} roundedCircle fluid style={{ width: '150px', height: '150px', objectFit: 'cover', border: '3px solid #dee2e6' }} />
+          {/* Adjusted border color for dark theme */}
+          <Image src={profileData.avatarUrl} roundedCircle fluid style={{ width: '150px', height: '150px', objectFit: 'cover', border: '3px solid #444' }} />
         </Col>
         <Col md={9}>
           <h1>{profileData.name}</h1>
           <h4 className="text-muted mb-3">{profileData.title}</h4>
           <p className="lead">{profileData.tagline}</p>
           <div className="d-flex gap-3">
-            <a href={profileData.contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-primary fs-4"><Linkedin /></a>
-            <a href={profileData.contact.github} target="_blank" rel="noopener noreferrer" className="text-dark fs-4"><Github /></a>
-            <a href={`mailto:${profileData.contact.email}`} className="text-secondary fs-4"><Envelope /></a>
+            {/* Adjusted link colors for better visibility on dark background */}
+            <a href={profileData.contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-info fs-4"><Linkedin /></a> {/* Using info color */}
+            <a href={profileData.contact.github} target="_blank" rel="noopener noreferrer" className="text-light fs-4"><Github /></a> {/* Using light color */}
+            <a href={`mailto:${profileData.contact.email}`} className="text-light fs-4"><Envelope /></a> {/* Using light color */}
           </div>
         </Col>
       </Row>
@@ -95,7 +98,8 @@ function ProfileView() {
                       <h6 className="mb-0">{edu.degree}</h6>
                       <small className="text-muted">{edu.institution}</small>
                     </div>
-                    <Badge bg="light" text="dark">{edu.period}</Badge>
+                    {/* Changed badge background for better dark theme integration */}
+                    <Badge bg="dark" text="light">{edu.period}</Badge>
                   </div>
                 </ListGroup.Item>
               ))}

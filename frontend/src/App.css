@@ -109,6 +109,34 @@ h2, h3, h4, h5, h6 {
   padding: 1.25rem;
 }
 
+/* Ensure ListGroup items inside dark cards are also dark */
+.card .list-group-item {
+  background-color: #383838; /* Slightly different dark shade */
+  border-color: #444;
+  color: #eee; /* Light text */
+}
+
+/* Ensure links within list group items are visible */
+.card .list-group-item a {
+  color: #6cb2eb; /* Lighter blue for links */
+}
+.card .list-group-item a:hover {
+  color: #8ec9f5;
+}
+
+/* Adjust ProgressBar for dark theme */
+.progress {
+  background-color: #555; /* Darker background for the track */
+  height: 1rem; /* Optional: Adjust height */
+}
+
+.progress-bar {
+  background-color: #0d6efd; /* Keep Bootstrap's primary blue or choose another accent */
+  color: #fff; /* Ensure label text is white */
+  font-size: 0.75rem; /* Optional: Adjust font size */
+}
+
+
 /* Alert styling adjustments for dark theme */
 .alert {
   border-radius: 0.3rem;
