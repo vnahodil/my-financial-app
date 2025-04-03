@@ -1,73 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
+
 /* Reset default browser styles that might interfere */
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; /* Consistent font */
-  background-color: #f8f9fa; /* Light background for the whole page */
-  color: #343a40; /* Default text color */
+  font-family: 'Montserrat', sans-serif; /* Modern, clean font */
+  background-color: #222; /* Dark background */
+  color: #eee; /* Light text color */
+  line-height: 1.6;
+  /* Placeholder background - replace URL later */
+  background-image: url('https://via.placeholder.com/1920x1080/222222/cccccc?text=Background+Placeholder');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Optional: makes background fixed during scroll */
 }
 
-/* Ensure the root element takes full height */
+/* Remove display:flex from #root as it's no longer needed for sidebar layout */
 #root {
-  display: flex;
   min-height: 100vh;
 }
 
-/* Sidebar specific styles */
-.sidebar-nav .nav-link {
-  color: #495057; /* Slightly muted link color */
-  padding: 0.75rem 1rem;
-  border-radius: 0.3rem;
-  margin-bottom: 0.25rem;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+/* Style for the main app container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.sidebar-nav .nav-link:hover {
-  background-color: #e9ecef; /* Subtle hover background */
-  color: #0d6efd; /* Bootstrap primary blue on hover */
+/* Top Navbar specific styles */
+.top-navbar {
+  background-color: rgba(34, 34, 34, 0.85) !important; /* Semi-transparent dark background */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  padding: 0.5rem 2rem; /* Adjust padding */
+  border-bottom: 1px solid #444;
 }
 
-.sidebar-nav .nav-link.active {
-  background-color: #0d6efd; /* Active link background */
-  color: white; /* Active link text color */
-  font-weight: 500;
+.top-navbar .navbar-brand img {
+  /* Styles for logo placeholder if needed */
 }
 
-/* Main content area styling */
+.top-navbar .nav-link {
+  color: #ccc !important; /* Light link color */
+  margin-left: 1rem; /* Space between links */
+  font-weight: 400;
+  transition: color 0.2s ease-in-out;
+  position: relative;
+  padding-bottom: 0.5rem; /* Space for underline */
+}
+
+.top-navbar .nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #0d6efd; /* Accent color */
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+.top-navbar .nav-link:hover,
+.top-navbar .nav-link.active {
+  color: #fff !important; /* White on hover/active */
+}
+
+.top-navbar .nav-link:hover::after,
+.top-navbar .nav-link.active::after {
+  width: 60%; /* Underline effect */
+}
+
+/* Main content area styling adjustments */
 .content-area {
   flex-grow: 1; /* Allow content area to take remaining space */
-  padding: 2rem; /* Add padding around the content */
-  background-color: #ffffff; /* White background for content */
-  /* Optional: Add a subtle shadow or border if desired */
-  /* box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05); */
+  padding: 3rem; /* Keep padding */
+  /* background-color: #282828; */ /* Remove specific background, let body background show */
+  /* Consider adding margin-top if using sticky-top navbar to prevent overlap,
+     but react-bootstrap might handle this. Test first. */
+  /* margin-top: 70px; /* Example: Adjust based on actual navbar height */
 }
 
 /* General heading styles */
 h2, h3, h4, h5, h6 {
-  color: #212529; /* Darker headings */
+  color: #eee; /* Light headings for dark background */
   margin-bottom: 1rem;
 }
 
-/* Card styling adjustments for consistency */
+/* Card styling adjustments for dark theme */
 .card {
-  border: 1px solid #dee2e6; /* Standard border */
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Subtle shadow */
+  background-color: #333; /* Dark card background */
+  border: 1px solid #444; /* Slightly lighter border */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adjusted shadow for dark theme */
+  border-radius: 0.5rem; /* Slightly more rounded corners */
+  margin-bottom: 1.5rem; /* Add some space between cards */
+  color: #eee; /* Ensure text inside card is light */
 }
 
 .card-header {
-  background-color: #f8f9fa; /* Light header background */
-  border-bottom: 1px solid #dee2e6;
+  background-color: #3a3a3a; /* Slightly different header background */
+  border-bottom: 1px solid #444;
+  color: #eee;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
 }
 
-/* Alert styling adjustments */
+.card-body {
+  padding: 1.25rem;
+}
+
+/* Alert styling adjustments for dark theme */
 .alert {
   border-radius: 0.3rem;
+  border: none; /* Remove default border */
+  color: #fff; /* White text for alerts */
 }
 
-/* Responsive adjustments if needed */
+.alert-info {
+  background-color: #0d6efd; /* Use accent color for info */
+}
+
+.alert-warning {
+  background-color: #fd7e14; /* Orange for warning */
+}
+
+.alert-danger {
+  background-color: #dc3545; /* Red for danger */
+}
+
+.alert-success {
+  background-color: #198754; /* Green for success */
+}
+
+
+/* Responsive adjustments for top navbar */
+@media (max-width: 991px) { /* Adjust breakpoint based on react-bootstrap's lg breakpoint */
+  .top-navbar .navbar-collapse {
+    background-color: rgba(40, 40, 40, 0.95); /* Dark background for collapsed menu */
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border-radius: 0.3rem;
+  }
+  .top-navbar .nav-link {
+    margin-left: 0;
+    padding: 0.5rem 0;
+    text-align: center;
+  }
+  .top-navbar .nav-link::after {
+    display: none; /* Hide underline effect in collapsed menu */
+  }
+}
+
 @media (max-width: 768px) {
-  /* Example: Stack sidebar and content on smaller screens */
-  /* #root { flex-direction: column; } */
-  /* .sidebar-nav { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #dee2e6; } */
+  .content-area {
+    padding: 1.5rem; /* Reduce padding on smaller screens */
+  }
+
+  .top-navbar {
+    padding: 0.5rem 1rem; /* Adjust navbar padding */
+  }
 }

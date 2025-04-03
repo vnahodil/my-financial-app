@@ -3,14 +3,21 @@ import React, { useState } from 'react';
 
 // Import React-Bootstrap layout components
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 
 // Import your custom components
-import Sidebar, { VIEWS } from './Sidebar'; // Import VIEWS constant
-import ItemsView from './ItemsView'; // Changed import
+// Removed Sidebar import
+import ItemsView from './ItemsView';
 import ProfileView from './ProfileView';
-import CookbookView from './CookbookView'; // Import the new CookbookView
+import CookbookView from './CookbookView';
+
+// Define VIEWS constant locally since Sidebar is removed
+const VIEWS = {
+  ITEMS: 'items',
+  PROFILE: 'profile',
+  COOKBOOK: 'cookbook',
+};
 
 function App() {
   // State to track the currently active view
@@ -31,22 +38,54 @@ function App() {
   };
 
   return (
-    // Use fluid container to take full width
-    <Container fluid>
-      <Row>
-        {/* Sidebar Column */}
-        {/* Adjust column sizes for different breakpoints (sm, md, lg) */}
-        <Col sm={3} md={2} className="p-0"> {/* p-0 to remove padding */}
-          <Sidebar activeView={activeView} setActiveView={setActiveView} />
-        </Col>
+    <div className="app-container"> {/* Add a wrapper div */}
+      <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="top-navbar">
+        <Container fluid> {/* Use fluid container for full width navbar */}
+          <Navbar.Brand href="#home" onClick={() => setActiveView(VIEWS.ITEMS)}>
+            {/* Placeholder for Logo */}
+            <img
+              src="https://via.placeholder.com/100x30?text=Logo" // Placeholder image URL
+              width="100"
+              height="30"
+              className="d-inline-block align-top"
+              alt="App logo placeholder"
+            />
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto"> {/* Align links to the right */}
+              <Nav.Link
+                href="#items"
+                active={activeView === VIEWS.ITEMS}
+                onClick={() => setActiveView(VIEWS.ITEMS)}
+              >
+                Items
+              </Nav.Link>
+              <Nav.Link
+                href="#profile"
+                active={activeView === VIEWS.PROFILE}
+                onClick={() => setActiveView(VIEWS.PROFILE)}
+              >
+                Profile
+              </Nav.Link>
+              <Nav.Link
+                href="#cookbook"
+                active={activeView === VIEWS.COOKBOOK}
+                onClick={() => setActiveView(VIEWS.COOKBOOK)}
+              >
+                Cookbook
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
-        {/* Content Area Column - Apply custom class and remove default padding */}
-        <Col sm={9} md={10} className="content-area"> {/* Use content-area class */}
-          {/* Render the component returned by renderActiveView */}
-          {renderActiveView()}
-        </Col>
-      </Row>
-    </Container>
+      {/* Main Content Area */}
+      <div className="content-area"> {/* Apply content-area class */}
+        {/* Render the component returned by renderActiveView */}
+        {renderActiveView()}
+      </div>
+    </div>
   );
 }
 
