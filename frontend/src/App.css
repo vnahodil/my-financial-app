@@ -10,7 +10,7 @@ body, html {
   color: #eee; /* Light text color */
   line-height: 1.6;
   /* Placeholder background - replace URL later */
-  background-image: url('https://via.placeholder.com/1920x1080/222222/cccccc?text=Background+Placeholder');
+  background-image: url('assets/20241030_104415_DSC05640.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed; /* Optional: makes background fixed during scroll */
@@ -179,7 +179,7 @@ h2, h3, h4, h5, h6 {
 /* Custom styles for the CV button on the landing page */
 .cv-button {
   color: #fff !important; /* White text - !important to override Bootstrap */
-  background-color: rgba(0, 0, 0, 0.7) !important; /* Semi-transparent black background (adjust alpha as needed) - !important */
+  background-color: rgba(0, 0, 0, 0.2) !important; /* Semi-transparent black background (adjust alpha as needed) - !important */
   border: 3px solid #fff !important; /* Thick white border - !important */
   border-radius: 0 !important; /* Sharp corners - !important */
   padding: 0.75rem 1.5rem; /* Adjust padding as needed */
@@ -190,7 +190,7 @@ h2, h3, h4, h5, h6 {
 .cv-button:hover,
 .cv-button:focus {
   color: #fff !important;
-  background-color: rgba(51, 51, 51, 0.8) !important; /* Slightly lighter/more opaque black on hover/focus */
+  background-color: rgba(51, 51, 51, 0.4) !important; /* Slightly lighter/more opaque black on hover/focus */
   border-color: #eee !important; /* Slightly off-white border on hover/focus */
 }
 
