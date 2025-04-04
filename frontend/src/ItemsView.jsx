@@ -57,7 +57,7 @@ function ItemsView() { // Changed component name
     // --- JSX for the Items View ---
     return (
       <> {/* Use Fragment or a simple div wrapper */}
-        <h2>Manage Items</h2> {/* Add a heading for this specific view */}
+        <h2>Leave a message:</h2> {/* Add a heading for this specific view */}
         <hr />
   
         <Form onSubmit={handleAddItem} className="mb-4 d-flex">
