@@ -14,6 +14,7 @@ function LandingPageView({ onNavigate }) {
             Welcome to my personal space. Explore my work, skills, and journey in the world of software development.
           </p>
           <Button 
+            href='#profile'
             variant="primary" 
             size="lg"
             onClick={() => onNavigate && onNavigate('#profile')}

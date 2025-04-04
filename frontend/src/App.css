@@ -64,6 +64,7 @@ body, html {
 .top-navbar .nav-link:hover,
 .top-navbar .nav-link.active {
   color: #fff !important; /* White on hover/active */
+  text-decoration: none; /* Prevent underline on hover */
 }
 
 .top-navbar .nav-link:hover::after,
