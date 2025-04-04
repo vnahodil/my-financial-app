@@ -55,7 +55,7 @@ function App() {
           <Navbar.Brand href="#home" onClick={() => setActiveView(VIEWS.LANDING)}>
             {/* Placeholder for Logo */}
             <img
-              src="src/assets/logo60x60.png" // Placeholder image URL
+              src="src/assets/logo60x60.jpg" // Placeholder image URL
               width="60"
               height="60"
               className="d-inline-block align-top"
