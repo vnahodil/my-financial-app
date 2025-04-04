@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 
 function LandingPageView({ onNavigate }) {
   return (
-    <Container fluid className="d-flex align-items-center justify-content-center text-center" style={{ minHeight: 'calc(100vh - 70px)', paddingTop: '5rem', paddingBottom: '5rem' }}>
+    <Container fluid className="d-flex align-items-end justify-content-center text-center" style={{ minHeight: 'calc(100vh - 200px)', paddingBottom: '5rem' }}>
       <Row>
         <Col>
           <h1 className="display-3 fw-bold mb-3">Stanislav Zmuda</h1>
