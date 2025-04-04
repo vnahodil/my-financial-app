@@ -74,7 +74,7 @@ function ProfileView() {
             <Card.Header as="h5" style={{ backgroundColor: 'rgba(58, 58, 58, 0.9)' }}><Briefcase className="me-2" /> Work Experience</Card.Header>
             <ListGroup variant="flush">
               {profileData.experience.map(exp => (
-                <ListGroup.Item key={exp.id} style={{ backgroundColor: 'rgba(56, 56, 56, 0.8)' }}>
+                <ListGroup.Item key={exp.id} style={{ backgroundColor: 'rgba(0, 0, 0, 0)'}}>
                   <div className="d-flex justify-content-between align-items-start">
                     <div>
                       <h6 className="mb-0">{exp.title}</h6>
@@ -93,7 +93,7 @@ function ProfileView() {
             <Card.Header as="h5" style={{ backgroundColor: 'rgba(58, 58, 58, 0.9)' }}><Mortarboard className="me-2" /> Education</Card.Header>
             <ListGroup variant="flush">
               {profileData.education.map(edu => (
-                <ListGroup.Item key={edu.id} style={{ backgroundColor: 'rgba(56, 56, 56, 0.8)' }}>
+                <ListGroup.Item key={edu.id} style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
                   <div className="d-flex justify-content-between align-items-start">
                     <div>
                       <h6 className="mb-0">{edu.degree}</h6>
