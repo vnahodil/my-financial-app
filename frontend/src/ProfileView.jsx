@@ -4,7 +4,7 @@ import { Briefcase, Mortarboard, CodeSlash, PersonCircle, Linkedin, Github, Enve
 
 // Placeholder data - replace with actual data later
 const profileData = {
-  name: "Stanislav Zmuda",
+  name: "STANISLAV ZMUDA",
   title: "Senior Software Engineer",
   tagline: "Building scalable web applications and driving innovation.",
   avatarUrl: "/cv_photo.jpg", // Simple placeholder image
@@ -38,15 +38,14 @@ function ProfileView() {
   return (
     <Container fluid className="py-4 px-md-5">
       {/* --- Hero Section --- */}
-      {/* Removed bg-light from the Row below */}
-      <Row className="align-items-center mb-5 p-4 rounded shadow-sm">
+      <Row className="align-items-center mb-5 p-4 rounded shadow-sm" style={{ backgroundColor: 'rgba(51, 51, 51, 0.85)', backdropFilter: 'blur(10px)' }}>
         <Col md={3} className="text-center mb-3 mb-md-0">
           {/* Adjusted border color for dark theme */}
           <Image src={profileData.avatarUrl} roundedCircle fluid style={{ width: '150px', height: '150px', objectFit: 'cover', border: '3px solid #444' }} />
         </Col>
         <Col md={9}>
           <h1>{profileData.name}</h1>
-          <h4 className="text-muted mb-3">{profileData.title}</h4>
+          <h4 className="mb-3">{profileData.title}</h4>
           <p className="lead">{profileData.tagline}</p>
           <div className="d-flex gap-3">
             {/* Adjusted link colors for better visibility on dark background */}
@@ -57,49 +56,51 @@ function ProfileView() {
         </Col>
       </Row>
 
+
+
       <Row>
         {/* --- Left Column (About, Experience, Education) --- */}
         <Col lg={8}>
           {/* About Section */}
-          <Card className="mb-4 shadow-sm">
-            <Card.Header as="h5"><PersonCircle className="me-2" /> About Me</Card.Header>
+          <Card className="mb-4 shadow-sm" style={{ backgroundColor: 'rgba(51, 51, 51, 0.8)', backdropFilter: 'blur(10px)' }}>
+            <Card.Header as="h5" style={{ backgroundColor: 'rgba(58, 58, 58, 0.9)' }}><PersonCircle className="me-2" /> About Me</Card.Header>
             <Card.Body>
               <Card.Text>{profileData.about}</Card.Text>
             </Card.Body>
           </Card>
 
           {/* Experience Section */}
-          <Card className="mb-4 shadow-sm">
-            <Card.Header as="h5"><Briefcase className="me-2" /> Work Experience</Card.Header>
+          <Card className="mb-4 shadow-sm" style={{ backgroundColor: 'rgba(51, 51, 51, 0.8)', backdropFilter: 'blur(10px)' }}>
+            <Card.Header as="h5" style={{ backgroundColor: 'rgba(58, 58, 58, 0.9)' }}><Briefcase className="me-2" /> Work Experience</Card.Header>
             <ListGroup variant="flush">
               {profileData.experience.map(exp => (
-                <ListGroup.Item key={exp.id}>
+                <ListGroup.Item key={exp.id} style={{ backgroundColor: 'rgba(56, 56, 56, 0.8)' }}>
                   <div className="d-flex justify-content-between align-items-start">
                     <div>
                       <h6 className="mb-0">{exp.title}</h6>
-                      <small className="text-muted">{exp.company}</small>
+                      <small>{exp.company}</small>
                     </div>
                     <Badge bg="secondary" pill>{exp.period}</Badge>
                   </div>
                   <p className="mt-2 mb-0">{exp.description}</p>
-                </ListGroup.Item>
+              </ListGroup.Item>
               ))}
             </ListGroup>
           </Card>
 
           {/* Education Section */}
-          <Card className="mb-4 shadow-sm">
-            <Card.Header as="h5"><Mortarboard className="me-2" /> Education</Card.Header>
+          <Card className="mb-4 shadow-sm" style={{ backgroundColor: 'rgba(51, 51, 51, 0.8)', backdropFilter: 'blur(10px)' }}>
+            <Card.Header as="h5" style={{ backgroundColor: 'rgba(58, 58, 58, 0.9)' }}><Mortarboard className="me-2" /> Education</Card.Header>
             <ListGroup variant="flush">
               {profileData.education.map(edu => (
-                <ListGroup.Item key={edu.id}>
+                <ListGroup.Item key={edu.id} style={{ backgroundColor: 'rgba(56, 56, 56, 0.8)' }}>
                   <div className="d-flex justify-content-between align-items-start">
                     <div>
                       <h6 className="mb-0">{edu.degree}</h6>
-                      <small className="text-muted">{edu.institution}</small>
+                      <small>{edu.institution}</small>
                     </div>
                     {/* Changed badge background for better dark theme integration */}
-                    <Badge bg="dark" text="light">{edu.period}</Badge>
+                    <Badge bg="secondary" pill>{edu.period}</Badge>
                   </div>
                 </ListGroup.Item>
               ))}
@@ -109,8 +110,8 @@ function ProfileView() {
 
         {/* --- Right Column (Skills) --- */}
         <Col lg={4}>
-          <Card className="shadow-sm">
-            <Card.Header as="h5"><CodeSlash className="me-2" /> Skills</Card.Header>
+          <Card className="shadow-sm" style={{ backgroundColor: 'rgba(51, 51, 51, 0.8)', backdropFilter: 'blur(10px)' }}>
+            <Card.Header as="h5" style={{ backgroundColor: 'rgba(58, 58, 58, 0.9)' }}><CodeSlash className="me-2" /> Skills</Card.Header>
             <Card.Body>
               {profileData.skills.map(skill => (
                 <div key={skill.id} className="mb-3">

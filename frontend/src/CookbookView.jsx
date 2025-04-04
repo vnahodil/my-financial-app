@@ -35,8 +35,8 @@ function CookbookView() {
 
   return (
     <Container fluid className="py-4 px-md-5">
-      <Card className="shadow-sm">
-        <Card.Header as="h2">My Cookbook</Card.Header>
+      <Card className="mb-4 shadow-sm" style={{ backgroundColor: 'rgba(51, 51, 51, 0.8)', backdropFilter: 'blur(10px)' }}>
+        <Card.Header as="h5" style={{ backgroundColor: 'rgba(58, 58, 58, 0.9)' }}>My Cookbook</Card.Header>
         <Card.Body>
           {loading && (
             <div className="text-center">
@@ -50,8 +50,27 @@ function CookbookView() {
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
-                // Map the 'table' markdown element to a React Bootstrap Table
-                table: ({ node, ...props }) => <Table striped bordered hover responsive size="sm" {...props} />
+                table: ({ node, ...props }) => (
+                  <Table 
+                    responsive 
+                    size="sm" 
+                    className="text-white mb-4" 
+                    style={{ 
+                      background: 'transparent',
+                      borderSpacing: '0 8px',
+                      borderCollapse: 'separate',
+                      '--bs-table-bg': 'transparent',
+                      '--bs-table-color': 'white',
+                    }} 
+                    {...props} 
+                  />
+                ),
+                td: ({node, ...props}) => (
+                  <td style={{background: 'transparent', color: 'white', padding: '0px'}} {...props} />
+                ),
+                th: ({node, ...props}) => (
+                  <th style={{background: 'transparent', color: 'white', padding: '0px'}} {...props} />
+                )
               }}
             >
               {markdown}

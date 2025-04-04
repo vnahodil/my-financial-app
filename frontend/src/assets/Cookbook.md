@@ -1,7 +1,3 @@
-## Obsah
-
-[TOC]
-
 ## Snídaně / Pečení
 
 #### Krtkův dort
