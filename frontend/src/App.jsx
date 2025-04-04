@@ -55,10 +55,11 @@ function App() {
           <Navbar.Brand href="#home" onClick={() => setActiveView(VIEWS.LANDING)}>
             {/* Placeholder for Logo */}
             <img
-              src="src/assets/logo60x60.jpg" // Placeholder image URL
+              src="/logo.svg" // Placeholder image URL
               width="60"
               height="60"
               className="d-inline-block align-top"
+              alt="Zmuda s.r.o."
             />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
