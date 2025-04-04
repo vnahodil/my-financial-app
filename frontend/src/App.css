@@ -176,6 +176,81 @@ h2, h3, h4, h5, h6 {
   }
 }
 
+/* --- Styles for ItemsView Components (and potentially others using these defaults) --- */
+
+/* Form Control */
+.form-control {
+  background-color: rgba(34, 34, 34, 0.85); /* Dark input background */
+  color: #eee; /* Light text */
+  border: 1px solid #555; /* Slightly lighter border */
+  border-radius: 0.3rem; /* Consistent rounding */
+}
+
+.form-control:focus {
+  background-color: rgba(59, 59, 59, 0.85); /* Slightly lighter on focus */
+  color: #fff;
+  border-color: rgba(34, 34, 34, 0.85); /* Accent border on focus */
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25); /* Bootstrap-like focus shadow */
+}
+
+.form-control::placeholder { /* Style placeholder text */
+  color: #aaa;
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: rgba(34, 34, 34, 0.85); /* Use accent color */
+  border-color: rgba(34, 34, 34, 0.85);
+  color: #fff;
+  border-radius: 0.3rem;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: rgba(14, 14, 14, 0.85); /* Darker shade on hover/focus */
+  border-color: rgba(14, 14, 14, 0.85);
+  color: #fff;
+}
+
+.btn-primary:disabled {
+  background-color: #555; /* Greyed out when disabled */
+  border-color: #555;
+}
+
+
+/* List Group (when not inside a card) */
+.list-group {
+   border-radius: 0.5rem; /* Match card rounding */
+   overflow: hidden; /* Ensure items clip to rounded corners */
+   border: 1px solid #444; /* Add border similar to cards */
+}
+
+.list-group-item {
+  background-color: rgba(34, 34, 34, 0.85); /* Match card background */
+  border: none; /* Remove individual item borders initially */
+  /* border: 1px solid #444; */ /* Match card border */
+  color: #eee; /* Light text */
+  padding: 0.75rem 1.25rem; /* Standard padding */
+}
+
+/* Add border between list items */
+.list-group-item + .list-group-item {
+  border-top: 1px solid #444; /* Use top border for separation */
+}
+
+/* Style for the small description text */
+.list-group-item small.text-muted {
+    color: #aaa !important; /* Lighter muted text for dark background */
+}
+
+/* Spinner color (ensure contrast) */
+.spinner-border {
+    color: rgba(34, 34, 34, 0.85); /* Use accent color for visibility */
+}
+
+/* --- End Styles for ItemsView Components --- */
+
 /* Custom styles for the CV button on the landing page */
 .cv-button {
   color: #fff !important; /* White text - !important to override Bootstrap */
