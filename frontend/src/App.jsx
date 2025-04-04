@@ -55,11 +55,10 @@ function App() {
           <Navbar.Brand href="#home" onClick={() => setActiveView(VIEWS.LANDING)}>
             {/* Placeholder for Logo */}
             <img
-              src="src/assets/logo.svg" // Placeholder image URL
+              src="src/assets/logo60x60.png" // Placeholder image URL
               width="60"
               height="60"
               className="d-inline-block align-top"
-              alt="NAHODIL.org"
             />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
