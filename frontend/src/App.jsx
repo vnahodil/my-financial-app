@@ -25,13 +25,20 @@ function App() {
   // State to track the currently active view
   const [activeView, setActiveView] = useState(VIEWS.LANDING); // Default to Items view
 
+  // Function to handle navigation between views
+  const handleNavigation = (target) => {
+    if (target === '#profile') {
+      setActiveView(VIEWS.PROFILE);
+    }
+  };
+
   // Function to render the correct component based on the active view
   const renderActiveView = () => {
     switch (activeView) {
       case VIEWS.ITEMS: // Changed case
         return <ItemsView />; // Changed component
-        case VIEWS.LANDING: // Changed case
-        return <LandingPageView />; // Changed component
+      case VIEWS.LANDING: // Changed case
+        return <LandingPageView onNavigate={handleNavigation} />; // Pass navigation handler
       case VIEWS.PROFILE:
         return <ProfileView />;
       case VIEWS.COOKBOOK: // Add case for CookbookView
@@ -45,46 +52,46 @@ function App() {
     <div className="app-container"> {/* Add a wrapper div */}
       <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="top-navbar">
         <Container fluid> {/* Use fluid container for full width navbar */}
-          <Navbar.Brand href="#home" onClick={() => setActiveView(VIEWS.ITEMS)}>
+          <Navbar.Brand href="#home" onClick={() => setActiveView(VIEWS.LANDING)}>
             {/* Placeholder for Logo */}
             <img
               src="https://via.placeholder.com/100x30?text=Logo" // Placeholder image URL
               width="100"
               height="30"
               className="d-inline-block align-top"
-              alt="App logo placeholder"
+              alt="NAHODIL.org"
             />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto"> {/* Align links to the right */}
             <Nav.Link
-                href="#landing"
+                href="#home"
                 active={activeView === VIEWS.LANDING}
                 onClick={() => setActiveView(VIEWS.LANDING)}
               >
-                Home
+                HOME
               </Nav.Link>
             <Nav.Link
                 href="#items"
                 active={activeView === VIEWS.ITEMS}
                 onClick={() => setActiveView(VIEWS.ITEMS)}
               >
-                DB Test
+                CHAT
               </Nav.Link>
               <Nav.Link
                 href="#profile"
                 active={activeView === VIEWS.PROFILE}
                 onClick={() => setActiveView(VIEWS.PROFILE)}
               >
-                Profile
+                CV
               </Nav.Link>
               <Nav.Link
                 href="#cookbook"
                 active={activeView === VIEWS.COOKBOOK}
                 onClick={() => setActiveView(VIEWS.COOKBOOK)}
               >
-                Cookbook
+                COOKBOOK
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
