@@ -15,8 +15,9 @@ function LandingPageView({ onNavigate }) {
           </p>
           <Button 
             href='#profile'
-            variant="primary" 
+            variant="primary"
             size="lg"
+            className="cv-button" // Add custom class
             onClick={() => onNavigate && onNavigate('#profile')}
           >
             View My CV
