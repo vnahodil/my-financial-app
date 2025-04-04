@@ -7,7 +7,7 @@ const profileData = {
   name: "Stanislav Zmuda",
   title: "Senior Software Engineer",
   tagline: "Building scalable web applications and driving innovation.",
-  avatarUrl: "https://placehold.co/150x150/EFEFEF/AAAAAA&text=AC", // Simple placeholder image
+  avatarUrl: "/cv_photo.jpg", // Simple placeholder image
   about: "Highly motivated and results-oriented Senior Software Engineer with 8+ years of experience in full-stack development, specializing in React, Node.js, and cloud technologies. Proven ability to lead projects, mentor junior developers, and deliver high-quality software solutions. Passionate about clean code, performance optimization, and creating exceptional user experiences.",
   experience: [
     { id: 1, title: "Senior Software Engineer", company: "Tech Solutions Inc.", period: "2020 - Present", description: "Led development of key features for the flagship product. Mentored junior engineers. Improved application performance by 20%." },
