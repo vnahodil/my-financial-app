@@ -49,7 +49,7 @@ function App() {
   };
 
   return (
-    <div className="app-container"> {/* Add a wrapper div */}
+    <div className={`app-container${activeView === VIEWS.COOKBOOK ? ' app-container--cookbook' : ''}`}>
       <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="top-navbar">
         <Container fluid> {/* Use fluid container for full width navbar */}
           <Navbar.Brand href="#home" onClick={() => setActiveView(VIEWS.LANDING)}>
@@ -99,7 +99,7 @@ function App() {
       </Navbar>
 
       {/* Main Content Area */}
-      <div className="content-area"> {/* Apply content-area class */}
+      <div className={`content-area${activeView === VIEWS.COOKBOOK ? ' content-area--cookbook' : ''}`}>
         {/* Render the component returned by renderActiveView */}
         {renderActiveView()}
       </div>

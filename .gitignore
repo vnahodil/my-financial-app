@@ -18,9 +18,9 @@ Desktop.ini
 
 # Python / Backend specific
 backend/venv/
-backend/__pycache__/
-backend/*.pyc
-backend/*.sqlite3 # If using SQLite for dev fallback
+**/__pycache__/
+**/*.pyc
+**/*.sqlite3
 backend/.env # IMPORTANT: Never commit secrets!
 backend/instance/ # Often used by Flask for instance-specific config/DB
 
