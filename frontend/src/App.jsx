@@ -12,6 +12,7 @@ import ItemsView from './ItemsView';
 import ProfileView from './ProfileView';
 import CookbookView from './CookbookView';
 import LandingPageView from './LandingPageView';
+import EtfView from './EtfView';
 
 // Define VIEWS constant locally since Sidebar is removed
 const VIEWS = {
@@ -19,6 +20,7 @@ const VIEWS = {
   PROFILE: 'profile',
   COOKBOOK: 'cookbook',
   LANDING: 'landing',
+  ETF: 'etf',
 };
 
 function App() {
@@ -43,6 +45,8 @@ function App() {
         return <ProfileView />;
       case VIEWS.COOKBOOK: // Add case for CookbookView
         return <CookbookView />;
+      case VIEWS.ETF:
+        return <EtfView />;
       default:
         return <LandingPageView />; // Fallback to landing page view
     }
@@ -92,6 +96,13 @@ function App() {
                 onClick={() => setActiveView(VIEWS.COOKBOOK)}
               >
                 COOKBOOK
+              </Nav.Link>
+              <Nav.Link
+                href="#etf"
+                active={activeView === VIEWS.ETF}
+                onClick={() => setActiveView(VIEWS.ETF)}
+              >
+                ETF
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

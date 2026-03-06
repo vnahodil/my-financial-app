@@ -420,6 +420,305 @@ h2, h3, h4, h5, h6 {
   margin-top: 3px;
 }
 
+/* --- ETF View --- */
+
+.etf-view {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 3rem;
+}
+
+.etf-header {
+  margin-bottom: 0.25rem;
+}
+
+.etf-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #eee;
+  margin-bottom: 0.3rem;
+}
+
+.etf-meta {
+  color: #aaa;
+  font-size: 0.82rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.etf-meta-note {
+  color: #666;
+  font-style: italic;
+}
+
+.etf-card {
+  background-color: rgba(18, 18, 22, 0.58);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.etf-card-header {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 0.7rem 1.25rem;
+  font-weight: 500;
+  color: #f0f0f0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.etf-card-body {
+  padding: 1.25rem;
+}
+
+.etf-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.etf-period-btn {
+  font-size: 0.72rem !important;
+  padding: 0.18rem 0.55rem !important;
+}
+
+.etf-period-btn--cap {
+  text-transform: capitalize;
+}
+
+.etf-stats-row {
+  display: flex;
+  gap: 2.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.etf-stat {
+  text-align: left;
+}
+
+.etf-stat-label {
+  font-size: 0.72rem;
+  color: #bbb;
+  margin-bottom: 0.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.etf-stat-value {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.etf-stat-value.pos { color: #28a745; }
+.etf-stat-value.neg { color: #dc3545; }
+
+.etf-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.etf-loading {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.etf-error {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #fd7e14;
+  font-size: 0.9rem;
+}
+
+.etf-table {
+  color: #eee;
+  --bs-table-bg: transparent;
+  --bs-table-color: #eee;
+  --bs-table-border-color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 0;
+}
+
+.etf-table thead th {
+  color: #ccc;
+  font-weight: 500;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+  padding-bottom: 0.6rem;
+}
+
+.etf-table tbody td {
+  border-color: rgba(255, 255, 255, 0.07);
+  font-size: 0.88rem;
+  vertical-align: middle;
+  padding: 0.5rem 0.5rem;
+}
+
+.etf-sector-badge {
+  background: rgba(13, 110, 253, 0.15);
+  color: #6ca3ff;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .etf-two-col {
+    grid-template-columns: 1fr;
+  }
+  .etf-stats-row {
+    gap: 1.5rem;
+  }
+}
+
+.etf-delta-pos { color: #28a745; font-weight: 500; }
+.etf-delta-neg { color: #dc3545; font-weight: 500; }
+
+.etf-rel-note {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+
+/* Instrument switcher pill row */
+.etf-switcher {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  background: rgba(18, 18, 22, 0.58);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+}
+
+.etf-switcher-divider {
+  width: 1px;
+  height: 1.4rem;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 0.2rem;
+}
+
+.etf-switcher-btn {
+  font-size: 0.78rem !important;
+  padding: 0.25rem 0.8rem !important;
+  border-radius: 2rem !important;
+  white-space: nowrap;
+}
+
+/* ── ETF button visibility overrides ─────────────────────────────────────────
+   btn-outline-secondary defaults to grey border/text on transparent — invisible
+   on light backgrounds. Force white-tinted appearance throughout the ETF page. */
+
+.etf-switcher .btn-outline-secondary,
+.etf-card .btn-outline-secondary,
+.etf-currency-selector .btn-outline-secondary {
+  color: #ddd !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  background-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+.etf-switcher .btn-outline-secondary:hover,
+.etf-card .btn-outline-secondary:hover,
+.etf-currency-selector .btn-outline-secondary:hover {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  background-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+.etf-switcher .btn-outline-secondary:disabled,
+.etf-card .btn-outline-secondary:disabled {
+  color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background-color: transparent !important;
+}
+
+/* Currency selector — pushed to the right of the switcher row */
+.etf-currency-selector {
+  margin-left: auto;
+}
+
+/* Per-instrument header */
+.etf-instrument-header {
+  background: rgba(18, 18, 22, 0.58);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.1rem;
+}
+
+.etf-instrument-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #eee;
+  margin-bottom: 0.25rem;
+}
+
+/* Fact sheet link */
+.etf-factsheet-link {
+  color: #6ea8fe;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+.etf-factsheet-link:hover {
+  text-decoration: underline;
+}
+
+/* Proxy disclosure note */
+.etf-proxy-note {
+  font-size: 0.76rem;
+  color: #888;
+  font-style: italic;
+}
+
+/* Portfolio weights badge row */
+.etf-weights-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  background: rgba(18, 18, 22, 0.58);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+}
+
+.etf-weight-badge {
+  background: rgba(13, 110, 253, 0.12);
+  border: 1px solid rgba(13, 110, 253, 0.3);
+  border-radius: 4px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.76rem;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.etf-weight-badge strong {
+  color: #ddd;
+  font-weight: 500;
+}
+
 /* --- Cookbook content headings --- */
 
 .cookbook-h2 {
