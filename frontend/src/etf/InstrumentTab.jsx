@@ -17,12 +17,18 @@ import {
 } from './chartHelpers.js';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
-const PERIODS = ['1y', '3y', '5y'];
+const PERIODS = ['1y', '3y', '5y', 'custom'];
 
 export default function InstrumentTab({
   isin,
   period,
   setPeriod,
+  customFrom,
+  setCustomFrom,
+  customTo,
+  setCustomTo,
+  cacheKey,
+  periodParams,
   chartMode,
   setChartMode,
   currency,
@@ -37,29 +43,30 @@ export default function InstrumentTab({
   const [holdingsView, setHoldingsView] = useState('absolute');
   const meta = INSTRUMENT_META[isin];
 
-  // ── Fetch performance whenever isin or period changes ──
+  // ── Fetch performance whenever isin or cacheKey changes ──
   useEffect(() => {
-    if (perfCache[isin]?.[period]) return;   // already loaded
+    if (period === 'custom' && customFrom >= customTo) return;
+    if (perfCache[isin]?.[cacheKey]) return;   // already loaded
 
     setPerfCache(prev => ({
       ...prev,
-      [isin]: { ...prev[isin], [period]: 'loading' },
+      [isin]: { ...prev[isin], [cacheKey]: 'loading' },
     }));
 
-    axios.get(`${API_URL}/api/etf/performance`, { params: { isin, period } })
+    axios.get(`${API_URL}/api/etf/performance`, { params: { isin, ...periodParams } })
       .then(res => {
         setPerfCache(prev => ({
           ...prev,
-          [isin]: { ...prev[isin], [period]: res.data.error ? { error: res.data.error } : res.data },
+          [isin]: { ...prev[isin], [cacheKey]: res.data.error ? { error: res.data.error } : res.data },
         }));
       })
       .catch(() => {
         setPerfCache(prev => ({
           ...prev,
-          [isin]: { ...prev[isin], [period]: { error: 'Could not reach the backend.' } },
+          [isin]: { ...prev[isin], [cacheKey]: { error: 'Could not reach the backend.' } },
         }));
       });
-  }, [isin, period]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isin, cacheKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Fetch fund data once per isin ──
   useEffect(() => {
@@ -81,7 +88,7 @@ export default function InstrumentTab({
   }, [isin]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Derive state from cache ──
-  const perfEntry = perfCache[isin]?.[period];
+  const perfEntry = perfCache[isin]?.[cacheKey];
   const perfLoading = !perfEntry || perfEntry === 'loading';
   const perfError   = typeof perfEntry === 'object' && perfEntry?.error ? perfEntry.error : null;
   const perfData    = !perfLoading && !perfError ? perfEntry : null;
@@ -91,8 +98,8 @@ export default function InstrumentTab({
   const fundError   = typeof fundEntry === 'object' && fundEntry?.error ? fundEntry.error : null;
   const fundData    = !fundLoading && !fundError ? fundEntry : null;
 
-  // ── FX rates for the current period ──
-  const fxRates   = Array.isArray(fxCache[period]) ? fxCache[period] : [];
+  // ── FX rates for the current cacheKey ──
+  const fxRates   = Array.isArray(fxCache[cacheKey]) ? fxCache[cacheKey] : [];
   const fxByDate  = useMemo(
     () => Object.fromEntries(fxRates.map(d => [d.date, d])),
     [fxRates]
@@ -118,6 +125,11 @@ export default function InstrumentTab({
       diff:     (etfRet - benchRet).toFixed(1),
     };
   }, [chartData]);
+
+  // ── Actual date range shown in chart ──
+  const actualRange = chartData.length >= 2
+    ? `${chartData[0].date} – ${chartData[chartData.length - 1].date}`
+    : null;
 
   // ── Sector data sorted for chart ──
   const sectors = useMemo(() => {
@@ -159,9 +171,7 @@ export default function InstrumentTab({
               <span className="etf-proxy-note">· Market data via proxy {meta.proxyTicker}</span>
             )}
             <span>· Benchmark: {BENCHMARK_LABEL}</span>
-            {meta.factSheetUrl && (
-              <span>· <a href={meta.factSheetUrl} target="_blank" rel="noopener noreferrer" className="etf-factsheet-link">Fact Sheet ↗</a></span>
-            )}
+            <span>· <a href={`${import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:5000'}/api/etf/factsheet?isin=${isin}`} download={`${isin}_fact_sheet.pdf`} className="etf-factsheet-link">Fact Sheet ↓</a></span>
           </div>
         </div>
       </div>
@@ -179,10 +189,30 @@ export default function InstrumentTab({
                   onClick={() => setPeriod(p)}
                   className="etf-period-btn"
                 >
-                  {p.toUpperCase()}
+                  {p === 'custom' ? 'Custom' : p.toUpperCase()}
                 </Button>
               ))}
             </ButtonGroup>
+            {period === 'custom' && (
+              <div className="etf-date-inputs me-2">
+                <input
+                  type="date"
+                  className="etf-date-input"
+                  value={customFrom}
+                  max={customTo}
+                  onChange={e => setCustomFrom(e.target.value)}
+                />
+                <span className="etf-date-sep">–</span>
+                <input
+                  type="date"
+                  className="etf-date-input"
+                  value={customTo}
+                  min={customFrom}
+                  max={new Date().toISOString().slice(0, 10)}
+                  onChange={e => setCustomTo(e.target.value)}
+                />
+              </div>
+            )}
             <ButtonGroup size="sm">
               {['relative', 'absolute'].map(m => (
                 <Button
@@ -212,7 +242,7 @@ export default function InstrumentTab({
               {stats && (
                 <div className="etf-stats-row">
                   <div className="etf-stat">
-                    <div className="etf-stat-label">Return in {currency} ({period.toUpperCase()})</div>
+                    <div className="etf-stat-label">Return in {currency} ({actualRange ?? period.toUpperCase()})</div>
                     <div className={`etf-stat-value ${parseFloat(stats.etfRet) >= 0 ? 'pos' : 'neg'}`}>
                       {parseFloat(stats.etfRet) >= 0 ? '+' : ''}{stats.etfRet}%
                     </div>

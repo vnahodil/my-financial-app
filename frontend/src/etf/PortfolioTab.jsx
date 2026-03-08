@@ -18,11 +18,17 @@ import {
 } from './chartHelpers.js';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
-const PERIODS = ['1y', '3y', '5y'];
+const PERIODS = ['1y', '3y', '5y', 'custom'];
 
 export default function PortfolioTab({
   period,
   setPeriod,
+  customFrom,
+  setCustomFrom,
+  customTo,
+  setCustomTo,
+  cacheKey,
+  periodParams,
   chartMode,
   setChartMode,
   currency,
@@ -37,23 +43,24 @@ export default function PortfolioTab({
   const [holdingsView, setHoldingsView] = useState('absolute');
   // ── Trigger fetches for all instruments missing data ──
   useEffect(() => {
+    if (period === 'custom' && customFrom >= customTo) return;
     for (const isin of INSTRUMENT_ISINS) {
-      if (!perfCache[isin]?.[period]) {
+      if (!perfCache[isin]?.[cacheKey]) {
         setPerfCache(prev => ({
           ...prev,
-          [isin]: { ...prev[isin], [period]: 'loading' },
+          [isin]: { ...prev[isin], [cacheKey]: 'loading' },
         }));
-        axios.get(`${API_URL}/api/etf/performance`, { params: { isin, period } })
+        axios.get(`${API_URL}/api/etf/performance`, { params: { isin, ...periodParams } })
           .then(res => {
             setPerfCache(prev => ({
               ...prev,
-              [isin]: { ...prev[isin], [period]: res.data.error ? { error: res.data.error } : res.data },
+              [isin]: { ...prev[isin], [cacheKey]: res.data.error ? { error: res.data.error } : res.data },
             }));
           })
           .catch(() => {
             setPerfCache(prev => ({
               ...prev,
-              [isin]: { ...prev[isin], [period]: { error: 'Could not reach backend.' } },
+              [isin]: { ...prev[isin], [cacheKey]: { error: 'Could not reach backend.' } },
             }));
           });
       }
@@ -77,16 +84,16 @@ export default function PortfolioTab({
           });
       }
     }
-  }, [period]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [cacheKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Loading state: how many instruments have perf data for this period ──
+  // ── Loading state: how many instruments have perf data for this cacheKey ──
   const loadedCount = INSTRUMENT_ISINS.filter(
-    isin => perfCache[isin]?.[period] && perfCache[isin][period] !== 'loading' && !perfCache[isin][period]?.error
+    isin => perfCache[isin]?.[cacheKey] && perfCache[isin][cacheKey] !== 'loading' && !perfCache[isin][cacheKey]?.error
   ).length;
   const allPerfLoaded = loadedCount === INSTRUMENT_ISINS.length;
 
-  // ── FX rates for the current period ──
-  const fxRates  = Array.isArray(fxCache[period]) ? fxCache[period] : [];
+  // ── FX rates for the current cacheKey ──
+  const fxRates  = Array.isArray(fxCache[cacheKey]) ? fxCache[cacheKey] : [];
   const fxByDate = useMemo(
     () => Object.fromEntries(fxRates.map(d => [d.date, d])),
     [fxRates]
@@ -94,9 +101,14 @@ export default function PortfolioTab({
 
   // ── Portfolio chart data ──
   const chartData = useMemo(
-    () => buildPortfolioChartData(perfCache, period, fxByDate, currency),
-    [perfCache, period, fxByDate, currency]
+    () => buildPortfolioChartData(perfCache, cacheKey, fxByDate, currency),
+    [perfCache, cacheKey, fxByDate, currency]
   );
+
+  // ── Actual date range shown in chart ──
+  const actualRange = chartData.length >= 2
+    ? `${chartData[0].date} – ${chartData[chartData.length - 1].date}`
+    : null;
 
   // ── Portfolio stats ──
   const stats = useMemo(() => {
@@ -193,10 +205,30 @@ export default function PortfolioTab({
                   onClick={() => setPeriod(p)}
                   className="etf-period-btn"
                 >
-                  {p.toUpperCase()}
+                  {p === 'custom' ? 'Custom' : p.toUpperCase()}
                 </Button>
               ))}
             </ButtonGroup>
+            {period === 'custom' && (
+              <div className="etf-date-inputs me-2">
+                <input
+                  type="date"
+                  className="etf-date-input"
+                  value={customFrom}
+                  max={customTo}
+                  onChange={e => setCustomFrom(e.target.value)}
+                />
+                <span className="etf-date-sep">–</span>
+                <input
+                  type="date"
+                  className="etf-date-input"
+                  value={customTo}
+                  min={customFrom}
+                  max={new Date().toISOString().slice(0, 10)}
+                  onChange={e => setCustomTo(e.target.value)}
+                />
+              </div>
+            )}
             <ButtonGroup size="sm">
               {['relative', 'absolute'].map(m => (
                 <Button
@@ -229,7 +261,7 @@ export default function PortfolioTab({
               {stats && (
                 <div className="etf-stats-row">
                   <div className="etf-stat">
-                    <div className="etf-stat-label">Portfolio in {currency} ({period.toUpperCase()})</div>
+                    <div className="etf-stat-label">Portfolio in {currency} ({actualRange ?? period.toUpperCase()})</div>
                     <div className={`etf-stat-value ${parseFloat(stats.portRet) >= 0 ? 'pos' : 'neg'}`}>
                       {parseFloat(stats.portRet) >= 0 ? '+' : ''}{stats.portRet}%
                     </div>

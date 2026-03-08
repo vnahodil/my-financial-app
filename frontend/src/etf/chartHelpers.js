@@ -116,10 +116,10 @@ export function buildChartData(etf, benchmark, etfCurrency = 'USD', benchCurrenc
  * @param {string} targetCurrency - display currency
  * @returns {Array<{date, portfolio_idx, bench_idx}>}
  */
-export function buildPortfolioChartData(perfCache, period, fxByDate = {}, targetCurrency = 'USD') {
-  // Collect instruments that have loaded data for this period
+export function buildPortfolioChartData(perfCache, cacheKey, fxByDate = {}, targetCurrency = 'USD') {
+  // Collect instruments that have loaded data for this cacheKey
   const available = INSTRUMENT_ISINS.filter(
-    isin => perfCache[isin]?.[period]?.etf?.length > 0
+    isin => perfCache[isin]?.[cacheKey]?.etf?.length > 0
   );
   if (available.length === 0) return [];
 
@@ -128,7 +128,7 @@ export function buildPortfolioChartData(perfCache, period, fxByDate = {}, target
   let benchSeries = null;
 
   for (const isin of available) {
-    const entry = perfCache[isin][period];
+    const entry = perfCache[isin][cacheKey];
     const { etf, benchmark } = entry;
     const etfCcy   = entry.etf_currency       || 'USD';
     const benchCcy = entry.benchmark_currency  || 'USD';

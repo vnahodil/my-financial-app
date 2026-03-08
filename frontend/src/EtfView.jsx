@@ -10,6 +10,11 @@ import PortfolioTab from './etf/PortfolioTab.jsx';
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
 const CURRENCIES = ['USD', 'CHF', 'EUR', 'CZK'];
 
+function todayStr() { return new Date().toISOString().slice(0, 10); }
+function yearsAgoStr(n) {
+  const d = new Date(); d.setFullYear(d.getFullYear() - n); return d.toISOString().slice(0, 10);
+}
+
 export default function EtfView() {
   // Active tab: 'portfolio' or one of the ISINs
   const [activeTab, setActiveTab] = useState('portfolio');
@@ -18,19 +23,30 @@ export default function EtfView() {
   const [period, setPeriod]       = useState('1y');
   const [chartMode, setChartMode] = useState('relative');
 
+  // Custom date range (used when period === 'custom')
+  const [customFrom, setCustomFrom] = useState(yearsAgoStr(2));
+  const [customTo,   setCustomTo]   = useState(todayStr());
+
   // Display currency for all charts
   const [currency, setCurrency] = useState('USD');
 
   // Shared data caches — prevent re-fetching on tab switches
-  // perfCache: { [isin]: { [period]: responseData | 'loading' | {error} } }
+  // perfCache: { [isin]: { [cacheKey]: responseData | 'loading' | {error} } }
   // fundCache: { [isin]: responseData | 'loading' | {error} }
-  // fxCache:   { [period]: [{date, CHF, EUR, CZK}] | 'loading' | {error} }
+  // fxCache:   { [cacheKey]: [{date, CHF, EUR, CZK}] | 'loading' | {error} }
   const [perfCache, setPerfCache] = useState({});
   const [fundCache, setFundCache] = useState({});
   const [fxCache,   setFxCache]   = useState({});
 
   // Benchmark fund data (URTH sectors + holdings) — fetched once on mount
   const [benchmarkFundData, setBenchmarkFundData] = useState(null);
+
+  // cacheKey uniquely identifies the time range for cache lookups
+  const cacheKey = period === 'custom' ? `custom_${customFrom}_${customTo}` : period;
+  // API params for the selected period
+  const periodParams = period === 'custom'
+    ? { start_date: customFrom, end_date: customTo }
+    : { period };
 
   // Fetch benchmark (URTH) fund data once on mount
   useEffect(() => {
@@ -39,17 +55,21 @@ export default function EtfView() {
       .catch(() => setBenchmarkFundData({ error: 'Failed to load benchmark data', sectors: [], holdings: [] }));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch FX rates whenever period changes (cached per period)
+  // Fetch FX rates whenever cacheKey changes (cached per key)
   useEffect(() => {
-    if (fxCache[period]) return;
-    setFxCache(prev => ({ ...prev, [period]: 'loading' }));
-    axios.get(`${API_URL}/api/etf/fx-rates`, { params: { period } })
-      .then(res => setFxCache(prev => ({ ...prev, [period]: res.data.rates })))
-      .catch(() => setFxCache(prev => ({ ...prev, [period]: { error: 'FX fetch failed' } })));
-  }, [period]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (period === 'custom' && customFrom >= customTo) return;
+    if (fxCache[cacheKey]) return;
+    setFxCache(prev => ({ ...prev, [cacheKey]: 'loading' }));
+    axios.get(`${API_URL}/api/etf/fx-rates`, { params: periodParams })
+      .then(res => setFxCache(prev => ({ ...prev, [cacheKey]: res.data.rates })))
+      .catch(() => setFxCache(prev => ({ ...prev, [cacheKey]: { error: 'FX fetch failed' } })));
+  }, [cacheKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const sharedProps = {
     period, setPeriod,
+    customFrom, setCustomFrom,
+    customTo, setCustomTo,
+    cacheKey, periodParams,
     chartMode, setChartMode,
     currency,
     fxCache,

@@ -498,6 +498,38 @@ h2, h3, h4, h5, h6 {
   text-transform: capitalize;
 }
 
+.etf-date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.etf-date-sep {
+  color: #aaa;
+  font-size: 0.75rem;
+}
+
+.etf-date-input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #eee;
+  font-size: 0.72rem;
+  padding: 0.18rem 0.4rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.etf-date-input:focus {
+  outline: none;
+  border-color: rgba(13, 110, 253, 0.6);
+}
+
+.etf-date-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+}
+
 .etf-stats-row {
   display: flex;
   gap: 2.5rem;

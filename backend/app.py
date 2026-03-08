@@ -1,11 +1,12 @@
 # app.py
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError # Import specific exception
 from flask_migrate import Migrate
 from flask_cors import CORS
 from config import Config
 from datetime import datetime, timedelta
+import os
 
 try:
     import yfinance as yf
@@ -23,6 +24,15 @@ except ImportError:
 #                    (used for Swiss institutional funds not listed on Yahoo Finance)
 
 BENCHMARK_TICKER = 'URTH'   # iShares MSCI World ETF
+
+FACTSHEET_URLS = {
+    'IE0002Y8CX98': 'https://dataspanapi.wisdomtree.com/pdr/documents/FACTSHEET/UCITS/EU/EN-GB/IE0002Y8CX98/',
+    'CH0356550415': 'https://global.morningstar.com/api/v1/en-eu/investments/funds/F00000YNFN/documents/_document?documentId=52&languageId=en',
+    'US26922A4206': 'https://www.defianceetfs.com/wp-content/uploads/funddocs/qtum/QTUM-FactSheet.pdf',
+    'CH0356507415': 'https://global.morningstar.com/api/v1/en-eu/investments/funds/F00000YNFP/documents/_document?documentId=52&languageId=en',
+    'LU0950674175': 'https://global.morningstar.com/api/v1/en-gb/investments/etfs/0P0001DK7Z/documents/_document?documentId=52&languageId=en',
+    'CH0106027128': 'https://global.morningstar.com/api/v1/en-eu/investments/etfs/0P0000MXOU/documents/_document?documentId=52&languageId=en',
+}
 
 INSTRUMENTS = {
     'IE0002Y8CX98': {
@@ -242,13 +252,19 @@ def etf_performance():
         return jsonify({'error': f'Unknown ISIN: {isin}', 'etf': [], 'benchmark': [],
                         'etf_ticker': None, 'isin': isin}), 200
 
-    period = request.args.get('period', '1y')
-    period_to_days = {'1y': 365, '3y': 365 * 3, '5y': 365 * 5}
-    days = period_to_days.get(period, 365)
-    end = datetime.now()
-    start = end - timedelta(days=days)
-    start_str = start.strftime('%Y-%m-%d')
-    end_str   = end.strftime('%Y-%m-%d')
+    start_date = request.args.get('start_date')
+    end_date   = request.args.get('end_date')
+    if start_date and end_date:
+        start_str = start_date
+        end_str   = end_date
+    else:
+        period = request.args.get('period', '1y')
+        period_to_days = {'1y': 365, '3y': 365 * 3, '5y': 365 * 5}
+        days = period_to_days.get(period, 365)
+        end = datetime.now()
+        start = end - timedelta(days=days)
+        start_str = start.strftime('%Y-%m-%d')
+        end_str   = end.strftime('%Y-%m-%d')
 
     etf_ticker, is_proxy = _get_ticker(isin)
     if not etf_ticker:
@@ -378,13 +394,19 @@ def etf_fx_rates():
     if not YFINANCE_AVAILABLE:
         return jsonify({'error': 'yfinance not installed', 'rates': []}), 200
 
-    period = request.args.get('period', '1y')
-    period_to_days = {'1y': 365, '3y': 365 * 3, '5y': 365 * 5}
-    days = period_to_days.get(period, 365)
-    end = datetime.now()
-    start = end - timedelta(days=days)
-    start_str = start.strftime('%Y-%m-%d')
-    end_str   = end.strftime('%Y-%m-%d')
+    start_date = request.args.get('start_date')
+    end_date   = request.args.get('end_date')
+    if start_date and end_date:
+        start_str = start_date
+        end_str   = end_date
+    else:
+        period = request.args.get('period', '1y')
+        period_to_days = {'1y': 365, '3y': 365 * 3, '5y': 365 * 5}
+        days = period_to_days.get(period, 365)
+        end = datetime.now()
+        start = end - timedelta(days=days)
+        start_str = start.strftime('%Y-%m-%d')
+        end_str   = end.strftime('%Y-%m-%d')
 
     fx_by_date = {}
     for ccy, fx_ticker in FX_TICKERS.items():
@@ -399,7 +421,40 @@ def etf_fx_rates():
             app.logger.warning(f'FX fetch failed for {fx_ticker}: {e}')
 
     rates = sorted(fx_by_date.values(), key=lambda d: d['date'])
-    return jsonify({'period': period, 'rates': rates})
+    return jsonify({'rates': rates})
+
+
+_FACTSHEET_DIR = os.path.join(os.path.dirname(__file__), '..', 'factsheets')
+_FETCH_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+
+
+@app.route('/api/etf/factsheet', methods=['GET'])
+def etf_factsheet():
+    isin = request.args.get('isin', '')
+    if isin not in FACTSHEET_URLS:
+        return jsonify({'error': f'Unknown ISIN: {isin}'}), 404
+
+    filename = f'{isin}_fact_sheet.pdf'
+    disposition = f'attachment; filename="{filename}"'
+
+    # Try local cache first (required for Morningstar, which blocks plain HTTP)
+    local_path = os.path.join(_FACTSHEET_DIR, filename)
+    if os.path.isfile(local_path):
+        with open(local_path, 'rb') as f:
+            data = f.read()
+        return Response(data, headers={'Content-Type': 'application/pdf',
+                                       'Content-Disposition': disposition})
+
+    # Fall back to upstream fetch (works for WisdomTree, Defiance, etc.)
+    url = FACTSHEET_URLS[isin]
+    try:
+        r = http_requests.get(url, headers={'User-Agent': _FETCH_UA}, timeout=20)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 502
+    if r.status_code != 200 or r.content[:4] != b'%PDF':
+        return jsonify({'error': f'upstream returned {r.status_code}'}), 502
+    return Response(r.content, headers={'Content-Type': 'application/pdf',
+                                        'Content-Disposition': disposition})
 
 
 # You don't need the __main__ block if using `flask run`

@@ -37,3 +37,5 @@ frontend/yarn-error.log*
 # Other
 .env # A global .env if you ever use one
 *.log
+
+factsheets/
